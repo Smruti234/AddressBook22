@@ -1,5 +1,9 @@
 package JavaPractice;
 
+import com.google.gson.Gson;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -169,6 +173,59 @@ public class ContactStore extends AddressBook {
             int i;
             while ((i = fileReader.read()) != -1){
                 System.out.print((char)i);}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeToFileInOpenCsv(ArrayList<ContactStore> addressBook){
+        try{
+            FileWriter fileWriter = new FileWriter("AddressBook.csv");
+            CSVWriter csvWriter = new CSVWriter(fileWriter);
+            String[] array = new String[addressBook.size()];
+            for (int i = 0; i < array.length; i++){
+                array[i] = String.valueOf(addressBook.get(i));
+            }
+            csvWriter.writeNext(array);
+            csvWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void readFromFileInOpenCsv(){
+        try{
+            FileReader fileReader = new FileReader("AddressBook.csv");
+            CSVReader csvReader = new CSVReader(fileReader);
+            String[] strings;
+            while ((strings = csvReader.readNext()) != null){
+                for (String token : strings)
+                    System.out.print(token);
+            }
+            csvReader.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeToFileInJson(ArrayList<ContactStore> addressBook){
+        try {
+            Gson gson = new Gson();
+            String stream = gson.toJson(addressBook);
+            FileWriter fileWriter = new FileWriter("AddressBook.json");
+            fileWriter.write(stream);
+            fileWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void readFromFileInJson(){
+        try {
+            Gson gson = new Gson();
+            BufferedReader br = new BufferedReader(new FileReader("AddressBook.json"));
+            ArrayList<ContactStore> addressBook = gson.fromJson(br, ArrayList.class);
+            System.out.println(addressBook);
         }catch (Exception e){
             e.printStackTrace();
         }
