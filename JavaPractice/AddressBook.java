@@ -1,4 +1,5 @@
 package JavaPractice;
+import java.io.Serializable;
 
 public class AddressBook {
     public String firstName, lastName, address, city, state, zip, phoneNumber, email;
